@@ -7,6 +7,7 @@
 <!-- 사용자 스크립트 추가 -->
 <th:block layout:fragment="script">
     <script th:inline="javascript">
+        <!-- 상품 조회 시 0페이지부터 조회 -->
         $(document).ready(function(){
            $("#searchBtn").on("click", function(e){
                e.preventDefault();
@@ -14,6 +15,7 @@
            });
         });
 
+        <!-- 이동할 페이지 값을 받아서 설정한 조회조건으로 상품 데이터를 조회 -->
         function page(page){
             var searchDateType = $("#searchDateType").val();
             var searchSellStatus = $("#searchSellStatus").val();
@@ -53,7 +55,7 @@
             <tbody>
             <tr th:each="item, status:${items.getContent()}">
                 <td th:text="${item.id}"></td>
-                <td><a th:href="'/admin/item.'+${item.id}" th:text="${item.itemName}"></a></td>
+                <td><a th:href="'/admin/item/'+${item.id}" th:text="${item.itemName}"></a></td>
                 <td th:text="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL} ? '판매중' : '품절'"></td>
                 <td th:text="${item.createdBy}"></td>
                 <td th:text="${item.regTime}"></td>
@@ -61,6 +63,7 @@
             </tbody>
         </table>
 
+        <!-- 페이징 처리 -->
         <div th:with="start=${(items.number/maxPage)*maxPage + 1},
         end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})">
             <ul class="pagination justify-content-center">
